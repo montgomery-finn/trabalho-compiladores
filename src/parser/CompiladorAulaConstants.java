@@ -21,25 +21,53 @@ public interface CompiladorAulaConstants {
   /** RegularExpression Id. */
   int IGUAL = 9;
   /** RegularExpression Id. */
-  int TIPOINTEIRO = 10;
+  int MAIORIGUAL = 10;
   /** RegularExpression Id. */
-  int TIPOBOOLEANO = 11;
+  int MENORIGUAL = 11;
   /** RegularExpression Id. */
-  int TIPOCARACTER = 12;
+  int DIFERENTE = 12;
   /** RegularExpression Id. */
-  int FALSO = 13;
+  int E = 13;
   /** RegularExpression Id. */
-  int VERDADEIRO = 14;
+  int OU = 14;
   /** RegularExpression Id. */
-  int ID = 15;
+  int MAIOR = 15;
   /** RegularExpression Id. */
-  int DECIMAL = 16;
+  int MENOR = 16;
   /** RegularExpression Id. */
-  int DIGITO = 17;
+  int RECEBE = 17;
   /** RegularExpression Id. */
-  int LETRA = 18;
+  int ABREPARENTESES = 18;
   /** RegularExpression Id. */
-  int CARACTER = 19;
+  int FECHAPARENTESES = 19;
+  /** RegularExpression Id. */
+  int ABRECHAVES = 20;
+  /** RegularExpression Id. */
+  int FECHACHAVES = 21;
+  /** RegularExpression Id. */
+  int TIPOINTEIRO = 22;
+  /** RegularExpression Id. */
+  int TIPOBOOLEANO = 23;
+  /** RegularExpression Id. */
+  int TIPOCARACTER = 24;
+  /** RegularExpression Id. */
+  int FALSO = 25;
+  /** RegularExpression Id. */
+  int VERDADEIRO = 26;
+  /** RegularExpression Id. */
+  int SE = 27;
+  /** RegularExpression Id. */
+  int ENQUANTO = 28;
+  /** RegularExpression Id. */
+  int ID = 29;
+  /** RegularExpression Id. */
+  int DECIMAL = 30;
+  /** RegularExpression Id. */
+  int DIGITO = 31;
+  /** RegularExpression Id. */
+  int LETRA = 32;
+  /** RegularExpression Id. */
+  int CARACTER = 33;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -55,12 +83,26 @@ public interface CompiladorAulaConstants {
     "\"eViveramFelizesParaSempre\"",
     "\";\"",
     "\",\"",
+    "\"==\"",
+    "\">=\"",
+    "\"<=\"",
+    "\"!=\"",
+    "\"&&\"",
+    "\"||\"",
+    "\" >\"",
+    "\"< \"",
     "\"=\"",
+    "\"(\"",
+    "\")\"",
+    "\"{\"",
+    "\"}\"",
     "\"inteiro\"",
     "\"booleano\"",
     "\"caracter\"",
     "\"falso\"",
     "\"verdadeiro\"",
+    "\"se\"",
+    "\"enquanto\"",
     "<ID>",
     "<DECIMAL>",
     "<DIGITO>",

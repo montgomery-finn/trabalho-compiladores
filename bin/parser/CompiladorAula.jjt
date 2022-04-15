@@ -120,20 +120,47 @@ TOKEN :
 {
   < ERAUMAVEZ : "eraUmaVez" >
 | < EVIVERAMFELIZESPARASEMPRE : "eViveramFelizesParaSempre" >
+
+
+
+
 | < PONTOEVIRGULA : ";" >
 | < VIRGULA : "," >
-| < IGUAL : "=" >
+| < IGUAL : "==" >
+| < MAIORIGUAL : ">=" >
+| < MENORIGUAL : "<=" >
+| < DIFERENTE : "!=" >
+| < E : "&&" >
+| < OU : "||" >
+| < MAIOR : " >" >
+| < MENOR : "< " >
+| < RECEBE : "=" >
+| < ABREPARENTESES : "(" >
+| < FECHAPARENTESES : ")" >
+| < ABRECHAVES : "{" >
+| < FECHACHAVES : "}" > 
+
+
+
 
 | < TIPOINTEIRO : "inteiro" >
 | < TIPOBOOLEANO : "booleano" >
 | < TIPOCARACTER : "caracter" >
-}
 
-TOKEN :
-{
-  < FALSO : "falso" >
+
+
+| < FALSO : "falso" >
 | < VERDADEIRO : "verdadeiro" >
-|  < ID : < LETRA >(< LETRA > | < DIGITO >)* >
+
+
+| < SE : "se" >
+| < ENQUANTO: "enquanto" >
+
+
+
+| < ID : < LETRA >(< LETRA > | < DIGITO >)* >
+
+
 | < DECIMAL : (< DIGITO >)+ >
 | < DIGITO : [ "0"-"9" ] >
 | < LETRA: ["A"-"Z"] | ["a"-"z"] >
@@ -144,7 +171,7 @@ SimpleNode main() :
 {}
 {
 	eraUmaVez()
-	bloco()
+		bloco()
 	eViveramFelizesParaSempre()
 { return jjtThis; }
 }
@@ -164,9 +191,13 @@ void eViveramFelizesParaSempre():
 void bloco():
 { }
 {
-	(tipoDeDadoEDecalaracaoDeVariaveis())*  
+	(tipoDeDadoEDecalaracaoDeVariaveis() | condicional())*  
 }
 
+
+
+
+//declaracao de variaveis
 void tipoDeDadoEDecalaracaoDeVariaveis():
 { }
 {
@@ -183,7 +214,7 @@ void umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula():
 void atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula():
 { }
 {
-	(igual() valor() declaracaoDeOutraVariavelOuPontoEVirgula()) | declaracaoDeOutraVariavelOuPontoEVirgula() 
+	(recebe() valor() declaracaoDeOutraVariavelOuPontoEVirgula()) | declaracaoDeOutraVariavelOuPontoEVirgula() 
 }
 
 void declaracaoDeOutraVariavelOuPontoEVirgula():
@@ -192,12 +223,64 @@ void declaracaoDeOutraVariavelOuPontoEVirgula():
   pontoEVirgula() | (virgula() umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula())
 }
 
+
+
+//condicional
+void condicional():
+{ }
+{
+	se() abreParenteses() expressaoLogicaFechaParenteses() abreChaves()
+		bloco()
+	fechaChaves()
+}
+
+void expressaoLogicaFechaParenteses():
+{ }
+{
+	idOuValor() continuaExpressaoLogicaOuFechaParenteses() 
+}
+
+void continuaExpressaoLogicaOuFechaParenteses():
+{ }
+{
+	fechaParenteses() | (operadorLogico() expressaoLogicaFechaParenteses())
+}
+
+void idOuValor():
+{ }
+{
+	id() | valor()
+}
+
+void operadorLogico():
+{ }
+{
+	igual() | maiorIgual() | menorIgual() | maior() | menor()
+}
+
+
+void valorBooleano():
+{ }
+{
+	verdadeiro() | falso()
+}
+
 void valor():
 { }
 {
-	< DECIMAL > | < CARACTER > | < VERDADEIRO > | < FALSO >
+	< DECIMAL > | valorBooleano()
 }
 
+void tipoDado() :
+{}
+{
+	tipoInteiro() | tipoBooleano() | tipoCaracter()
+}
+
+
+
+
+//terminais
 void pontoEVirgula():
 { }
 {
@@ -210,23 +293,10 @@ void virgula():
 	< VIRGULA >
 }
 
-
 void id():
 { }
 {
   < ID >
-}
-
-void igual():
-{ }
-{
-  < IGUAL >
-}
-
-void tipoDado() :
-{}
-{
-	tipoInteiro() | tipoBooleano() | tipoCaracter()
 }
 
 void tipoInteiro():
@@ -246,3 +316,100 @@ void tipoCaracter():
 {
 	< TIPOCARACTER >
 }
+
+void se():
+{}
+{
+	< SE >
+}
+
+void abreParenteses():
+{}
+{
+	< ABREPARENTESES >
+}
+
+void fechaParenteses():
+{}
+{
+	< FECHAPARENTESES >
+}
+
+void igual():
+{}
+{
+	< IGUAL >
+}
+
+void maiorIgual():
+{}
+{
+  < MAIORIGUAL >
+}
+
+void menorIgual():
+{ }
+{
+	< MENORIGUAL >
+}
+
+void diferente():
+{ }
+{
+	< DIFERENTE >
+}
+
+void e():
+{ }
+{
+	< E >
+}
+
+void ou():
+{ }
+{
+	< OU >
+}
+
+void maior():
+{}
+{
+	< MAIOR >
+}
+
+void menor():
+{}
+{
+	< MENOR >
+}
+
+void recebe():
+{}
+{
+	< RECEBE >
+}
+
+void verdadeiro():
+{ }
+{
+	< VERDADEIRO >
+}
+
+void falso():
+{ }
+{
+	< FALSO >
+}
+
+void abreChaves():
+{ }
+{
+	< ABRECHAVES >
+}
+
+void fechaChaves():
+{ }
+{
+	< FECHACHAVES >
+}
+

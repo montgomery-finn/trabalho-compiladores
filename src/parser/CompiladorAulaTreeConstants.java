@@ -11,15 +11,36 @@ public interface CompiladorAulaTreeConstants
   public int JJTUMAOUMAISVARIAVEISCOMOUSEMATRIBUICAOSEGUIDASDEPONTOEVIRGULA = 5;
   public int JJTATRIBUICAODEVALOROUDECLARACAODEOUTRAVARIAVELOUPONTOEVIRGULA = 6;
   public int JJTDECLARACAODEOUTRAVARIAVELOUPONTOEVIRGULA = 7;
-  public int JJTVALOR = 8;
-  public int JJTPONTOEVIRGULA = 9;
-  public int JJTVIRGULA = 10;
-  public int JJTID = 11;
-  public int JJTIGUAL = 12;
-  public int JJTTIPODADO = 13;
-  public int JJTTIPOINTEIRO = 14;
-  public int JJTTIPOBOOLEANO = 15;
-  public int JJTTIPOCARACTER = 16;
+  public int JJTCONDICIONAL = 8;
+  public int JJTEXPRESSAOLOGICAFECHAPARENTESES = 9;
+  public int JJTCONTINUAEXPRESSAOLOGICAOUFECHAPARENTESES = 10;
+  public int JJTIDOUVALOR = 11;
+  public int JJTOPERADORLOGICO = 12;
+  public int JJTVALORBOOLEANO = 13;
+  public int JJTVALOR = 14;
+  public int JJTTIPODADO = 15;
+  public int JJTPONTOEVIRGULA = 16;
+  public int JJTVIRGULA = 17;
+  public int JJTID = 18;
+  public int JJTTIPOINTEIRO = 19;
+  public int JJTTIPOBOOLEANO = 20;
+  public int JJTTIPOCARACTER = 21;
+  public int JJTSE = 22;
+  public int JJTABREPARENTESES = 23;
+  public int JJTFECHAPARENTESES = 24;
+  public int JJTIGUAL = 25;
+  public int JJTMAIORIGUAL = 26;
+  public int JJTMENORIGUAL = 27;
+  public int JJTDIFERENTE = 28;
+  public int JJTE = 29;
+  public int JJTOU = 30;
+  public int JJTMAIOR = 31;
+  public int JJTMENOR = 32;
+  public int JJTRECEBE = 33;
+  public int JJTVERDADEIRO = 34;
+  public int JJTFALSO = 35;
+  public int JJTABRECHAVES = 36;
+  public int JJTFECHACHAVES = 37;
 
 
   public String[] jjtNodeName = {
@@ -31,15 +52,36 @@ public interface CompiladorAulaTreeConstants
     "umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula",
     "atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula",
     "declaracaoDeOutraVariavelOuPontoEVirgula",
+    "condicional",
+    "expressaoLogicaFechaParenteses",
+    "continuaExpressaoLogicaOuFechaParenteses",
+    "idOuValor",
+    "operadorLogico",
+    "valorBooleano",
     "valor",
+    "tipoDado",
     "pontoEVirgula",
     "virgula",
     "id",
-    "igual",
-    "tipoDado",
     "tipoInteiro",
     "tipoBooleano",
     "tipoCaracter",
+    "se",
+    "abreParenteses",
+    "fechaParenteses",
+    "igual",
+    "maiorIgual",
+    "menorIgual",
+    "diferente",
+    "e",
+    "ou",
+    "maior",
+    "menor",
+    "recebe",
+    "verdadeiro",
+    "falso",
+    "abreChaves",
+    "fechaChaves",
   };
 }
-/* JavaCC - OriginalChecksum=fcff5dafdc221fa9f5edf61ad9e6020f (do not edit this line) */
+/* JavaCC - OriginalChecksum=f9d6e427366c748d7cc3e1e255e3c3ce (do not edit this line) */
