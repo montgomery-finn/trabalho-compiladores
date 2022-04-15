@@ -59,15 +59,19 @@ public interface CompiladorAulaConstants {
   /** RegularExpression Id. */
   int ENQUANTO = 28;
   /** RegularExpression Id. */
-  int ID = 29;
+  int LEIA = 29;
   /** RegularExpression Id. */
-  int DECIMAL = 30;
+  int ESCREVA = 30;
   /** RegularExpression Id. */
-  int DIGITO = 31;
+  int ID = 31;
   /** RegularExpression Id. */
-  int LETRA = 32;
+  int DECIMAL = 32;
   /** RegularExpression Id. */
-  int CARACTER = 33;
+  int DIGITO = 33;
+  /** RegularExpression Id. */
+  int LETRA = 34;
+  /** RegularExpression Id. */
+  int CARACTER = 35;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -103,6 +107,8 @@ public interface CompiladorAulaConstants {
     "\"verdadeiro\"",
     "\"se\"",
     "\"enquanto\"",
+    "\"leia\"",
+    "\"escreva\"",
     "<ID>",
     "<DECIMAL>",
     "<DIGITO>",

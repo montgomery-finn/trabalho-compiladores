@@ -162,13 +162,23 @@ TOKEN :
 
 
 
+
+| < LEIA: "leia" >
+| < ESCREVA: "escreva" >
+
+
+
+
 | < ID : < LETRA >(< LETRA > | < DIGITO >)* >
+
+
 
 
 | < DECIMAL : (< DIGITO >)+ >
 | < DIGITO : [ "0"-"9" ] >
 | < LETRA: ["A"-"Z"] | ["a"-"z"] >
 | < CARACTER : "'" (< LETRA > | < DIGITO >) "'">
+
 }
 
 SimpleNode main() :
@@ -256,7 +266,7 @@ void bloco():
 {/*@bgen(jjtree) bloco */
         try {
 /*@egen*/
-	(tipoDeDadoEDecalaracaoDeVariaveis() | condicional())*/*@bgen(jjtree)*/
+	(tipoDeDadoEDecalaracaoDeVariaveis() | condicional() | repeticaoEnquanto())*/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -281,7 +291,6 @@ void bloco():
 
 
 
-
 //declaracao de variaveis
 void tipoDeDadoEDecalaracaoDeVariaveis():
 {/*@bgen(jjtree) tipoDeDadoEDecalaracaoDeVariaveis */
@@ -292,7 +301,7 @@ void tipoDeDadoEDecalaracaoDeVariaveis():
 {/*@bgen(jjtree) tipoDeDadoEDecalaracaoDeVariaveis */
   try {
 /*@egen*/
-  tipoDado() umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula()/*@bgen(jjtree)*/
+  tipoDado() umaOuMaisvariaveisComOuSemAtribuicao() pontoEVirgula()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -315,17 +324,16 @@ void tipoDeDadoEDecalaracaoDeVariaveis():
 /*@egen*/
 }
 
-
-void umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula():
-{/*@bgen(jjtree) umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula */
-  SimpleNode jjtn000 = new SimpleNode(JJTUMAOUMAISVARIAVEISCOMOUSEMATRIBUICAOSEGUIDASDEPONTOEVIRGULA);
+void umaOuMaisvariaveisComOuSemAtribuicao():
+{/*@bgen(jjtree) umaOuMaisvariaveisComOuSemAtribuicao */
+  SimpleNode jjtn000 = new SimpleNode(JJTUMAOUMAISVARIAVEISCOMOUSEMATRIBUICAO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/ }
-{/*@bgen(jjtree) umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula */
+{/*@bgen(jjtree) umaOuMaisvariaveisComOuSemAtribuicao */
   try {
 /*@egen*/
-  id() atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula()/*@bgen(jjtree)*/
+  id() (atribuicaoValor())? (declaracaoDeOutraVariavel())?/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -348,16 +356,16 @@ void umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula():
 /*@egen*/
 }
 
-void atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula():
-{/*@bgen(jjtree) atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula */
-  SimpleNode jjtn000 = new SimpleNode(JJTATRIBUICAODEVALOROUDECLARACAODEOUTRAVARIAVELOUPONTOEVIRGULA);
+void atribuicaoValor():
+{/*@bgen(jjtree) atribuicaoValor */
+  SimpleNode jjtn000 = new SimpleNode(JJTATRIBUICAOVALOR);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/ }
-{/*@bgen(jjtree) atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula */
+{/*@bgen(jjtree) atribuicaoValor */
         try {
 /*@egen*/
-	(recebe() valor() declaracaoDeOutraVariavelOuPontoEVirgula()) | declaracaoDeOutraVariavelOuPontoEVirgula()/*@bgen(jjtree)*/
+	recebe() valor()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -377,19 +385,19 @@ void atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula():
             jjtree.closeNodeScope(jjtn000, true);
           }
         }
-/*@egen*/ 
+/*@egen*/
 }
 
-void declaracaoDeOutraVariavelOuPontoEVirgula():
-{/*@bgen(jjtree) declaracaoDeOutraVariavelOuPontoEVirgula */
-  SimpleNode jjtn000 = new SimpleNode(JJTDECLARACAODEOUTRAVARIAVELOUPONTOEVIRGULA);
+void declaracaoDeOutraVariavel():
+{/*@bgen(jjtree) declaracaoDeOutraVariavel */
+  SimpleNode jjtn000 = new SimpleNode(JJTDECLARACAODEOUTRAVARIAVEL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/ }
-{/*@bgen(jjtree) declaracaoDeOutraVariavelOuPontoEVirgula */
+{/*@bgen(jjtree) declaracaoDeOutraVariavel */
   try {
 /*@egen*/
-  pontoEVirgula() | (virgula() umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula())/*@bgen(jjtree)*/
+  virgula() umaOuMaisvariaveisComOuSemAtribuicao()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -414,7 +422,16 @@ void declaracaoDeOutraVariavelOuPontoEVirgula():
 
 
 
-//condicional
+
+
+
+
+
+
+
+
+
+
 void condicional():
 {/*@bgen(jjtree) condicional */
   SimpleNode jjtn000 = new SimpleNode(JJTCONDICIONAL);
@@ -424,7 +441,7 @@ void condicional():
 {/*@bgen(jjtree) condicional */
         try {
 /*@egen*/
-	se() abreParenteses() expressaoLogicaFechaParenteses() abreChaves()
+	se() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
 		bloco()
 	fechaChaves()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
@@ -449,16 +466,51 @@ void condicional():
 /*@egen*/
 }
 
-void expressaoLogicaFechaParenteses():
-{/*@bgen(jjtree) expressaoLogicaFechaParenteses */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSAOLOGICAFECHAPARENTESES);
+void repeticaoEnquanto():
+{/*@bgen(jjtree) repeticaoEnquanto */
+  SimpleNode jjtn000 = new SimpleNode(JJTREPETICAOENQUANTO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/ }
-{/*@bgen(jjtree) expressaoLogicaFechaParenteses */
+{/*@bgen(jjtree) repeticaoEnquanto */
         try {
 /*@egen*/
-	idOuValor() continuaExpressaoLogicaOuFechaParenteses()/*@bgen(jjtree)*/
+	enquanto() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
+		bloco()
+	fechaChaves()/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void expressaoLogica():
+{/*@bgen(jjtree) expressaoLogica */
+  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSAOLOGICA);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) expressaoLogica */
+        try {
+/*@egen*/
+	(idOuValor() (continuaExpressaoLogica())?)
+	| (abreParenteses() expressaoLogica() fechaParenteses())/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -481,16 +533,16 @@ void expressaoLogicaFechaParenteses():
 /*@egen*/ 
 }
 
-void continuaExpressaoLogicaOuFechaParenteses():
-{/*@bgen(jjtree) continuaExpressaoLogicaOuFechaParenteses */
-  SimpleNode jjtn000 = new SimpleNode(JJTCONTINUAEXPRESSAOLOGICAOUFECHAPARENTESES);
+void continuaExpressaoLogica():
+{/*@bgen(jjtree) continuaExpressaoLogica */
+  SimpleNode jjtn000 = new SimpleNode(JJTCONTINUAEXPRESSAOLOGICA);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/ }
-{/*@bgen(jjtree) continuaExpressaoLogicaOuFechaParenteses */
+{/*@bgen(jjtree) continuaExpressaoLogica */
         try {
 /*@egen*/
-	fechaParenteses() | (operadorLogico() expressaoLogicaFechaParenteses())/*@bgen(jjtree)*/
+	operadorLogico() expressaoLogica()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -554,7 +606,7 @@ void operadorLogico():
 {/*@bgen(jjtree) operadorLogico */
         try {
 /*@egen*/
-	igual() | maiorIgual() | menorIgual() | maior() | menor()/*@bgen(jjtree)*/
+	igual() | maiorIgual() | menorIgual() | maior() | menor() | diferente() |  e() | ou()/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -607,7 +659,7 @@ void valorBooleano():
             jjtree.closeNodeScope(jjtn000, true);
           }
         }
-/*@egen*/
+/*@egen*/ 
 }
 
 void valor():
@@ -619,7 +671,7 @@ void valor():
 {/*@bgen(jjtree) valor */
         try {
 /*@egen*/
-	< DECIMAL > | valorBooleano()/*@bgen(jjtree)*/
+	< DECIMAL > | valorBooleano() | < CARACTER >/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -1074,3 +1126,92 @@ void fechaChaves():
 /*@egen*/
 }
 
+void enquanto():
+{/*@bgen(jjtree) enquanto */
+  SimpleNode jjtn000 = new SimpleNode(JJTENQUANTO);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) enquanto */
+        try {
+/*@egen*/
+	< ENQUANTO >/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void leia():
+{/*@bgen(jjtree) leia */
+  SimpleNode jjtn000 = new SimpleNode(JJTLEIA);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) leia */
+        try {
+/*@egen*/
+	< LEIA >/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void escreva():
+{/*@bgen(jjtree) escreva */
+  SimpleNode jjtn000 = new SimpleNode(JJTESCREVA);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) escreva */
+        try {
+/*@egen*/
+	< ESCREVA >/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void caracter():
+{/*@bgen(jjtree) caracter */
+  SimpleNode jjtn000 = new SimpleNode(JJTCARACTER);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) caracter */
+        try {
+/*@egen*/
+	< CARACTER >/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void decimal():
+{/*@bgen(jjtree) decimal */
+  SimpleNode jjtn000 = new SimpleNode(JJTDECIMAL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) decimal */
+        try {
+/*@egen*/
+	< DECIMAL >/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}

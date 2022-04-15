@@ -158,13 +158,23 @@ TOKEN :
 
 
 
+
+| < LEIA: "leia" >
+| < ESCREVA: "escreva" >
+
+
+
+
 | < ID : < LETRA >(< LETRA > | < DIGITO >)* >
+
+
 
 
 | < DECIMAL : (< DIGITO >)+ >
 | < DIGITO : [ "0"-"9" ] >
 | < LETRA: ["A"-"Z"] | ["a"-"z"] >
 | < CARACTER : "'" (< LETRA > | < DIGITO >) "'">
+
 }
 
 SimpleNode main() :
@@ -191,9 +201,8 @@ void eViveramFelizesParaSempre():
 void bloco():
 { }
 {
-	(tipoDeDadoEDecalaracaoDeVariaveis() | condicional())*  
+	(tipoDeDadoEDecalaracaoDeVariaveis() | condicional() | repeticaoEnquanto())*  
 }
-
 
 
 
@@ -201,49 +210,66 @@ void bloco():
 void tipoDeDadoEDecalaracaoDeVariaveis():
 { }
 {
-  tipoDado() umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula()
+  tipoDado() umaOuMaisvariaveisComOuSemAtribuicao() pontoEVirgula()
 }
 
-
-void umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula():
+void umaOuMaisvariaveisComOuSemAtribuicao():
 { }
 {
-  id() atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula()
+  id() (atribuicaoValor())? (declaracaoDeOutraVariavel())?
 }
 
-void atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula():
+void atribuicaoValor():
 { }
 {
-	(recebe() valor() declaracaoDeOutraVariavelOuPontoEVirgula()) | declaracaoDeOutraVariavelOuPontoEVirgula() 
+	recebe() valor()
 }
 
-void declaracaoDeOutraVariavelOuPontoEVirgula():
+void declaracaoDeOutraVariavel():
 { }
 {
-  pontoEVirgula() | (virgula() umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula())
+  virgula() umaOuMaisvariaveisComOuSemAtribuicao()
 }
 
 
 
-//condicional
+
+
+
+
+
+
+
+
+
+
 void condicional():
 { }
 {
-	se() abreParenteses() expressaoLogicaFechaParenteses() abreChaves()
+	se() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
 		bloco()
 	fechaChaves()
 }
 
-void expressaoLogicaFechaParenteses():
+void repeticaoEnquanto():
 { }
 {
-	idOuValor() continuaExpressaoLogicaOuFechaParenteses() 
+	enquanto() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
+		bloco()
+	fechaChaves()
 }
 
-void continuaExpressaoLogicaOuFechaParenteses():
+void expressaoLogica():
 { }
 {
-	fechaParenteses() | (operadorLogico() expressaoLogicaFechaParenteses())
+	(idOuValor() (continuaExpressaoLogica())?)
+	| (abreParenteses() expressaoLogica() fechaParenteses()) 
+}
+
+void continuaExpressaoLogica():
+{ }
+{
+	operadorLogico() expressaoLogica()
 }
 
 void idOuValor():
@@ -255,20 +281,20 @@ void idOuValor():
 void operadorLogico():
 { }
 {
-	igual() | maiorIgual() | menorIgual() | maior() | menor()
+	igual() | maiorIgual() | menorIgual() | maior() | menor() | diferente() |  e() | ou()
 }
 
 
 void valorBooleano():
 { }
 {
-	verdadeiro() | falso()
+	verdadeiro() | falso() 
 }
 
 void valor():
 { }
 {
-	< DECIMAL > | valorBooleano()
+	< DECIMAL > | valorBooleano() | < CARACTER >
 }
 
 void tipoDado() :
@@ -413,3 +439,32 @@ void fechaChaves():
 	< FECHACHAVES >
 }
 
+void enquanto():
+{ }
+{
+	< ENQUANTO >
+}
+
+void leia():
+{ }
+{
+	< LEIA >
+}
+
+void escreva():
+{ }
+{
+	< ESCREVA >
+}
+
+void caracter():
+{ }
+{
+	< CARACTER >
+}
+
+void decimal():
+{ }
+{
+	< DECIMAL >
+}

@@ -170,6 +170,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
         case TIPOBOOLEANO:
         case TIPOCARACTER:
         case SE:
+        case ENQUANTO:
           ;
           break;
         default:
@@ -184,6 +185,9 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
           break;
         case SE:
           condicional();
+          break;
+        case ENQUANTO:
+          repeticaoEnquanto();
           break;
         default:
           jj_la1[1] = jj_gen;
@@ -220,7 +224,8 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
   jjtree.openNodeScope(jjtn000);
     try {
       tipoDado();
-      umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula();
+      umaOuMaisvariaveisComOuSemAtribuicao();
+      pontoEVirgula();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -242,14 +247,29 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
-  static final public void umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula() throws ParseException {
- /*@bgen(jjtree) umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula */
-  SimpleNode jjtn000 = new SimpleNode(JJTUMAOUMAISVARIAVEISCOMOUSEMATRIBUICAOSEGUIDASDEPONTOEVIRGULA);
+  static final public void umaOuMaisvariaveisComOuSemAtribuicao() throws ParseException {
+ /*@bgen(jjtree) umaOuMaisvariaveisComOuSemAtribuicao */
+  SimpleNode jjtn000 = new SimpleNode(JJTUMAOUMAISVARIAVEISCOMOUSEMATRIBUICAO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
       id();
-      atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case RECEBE:
+        atribuicaoValor();
+        break;
+      default:
+        jj_la1[2] = jj_gen;
+        ;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case VIRGULA:
+        declaracaoDeOutraVariavel();
+        break;
+      default:
+        jj_la1[3] = jj_gen;
+        ;
+      }
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -271,27 +291,14 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
-  static final public void atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula() throws ParseException {
- /*@bgen(jjtree) atribuicaoDeValorOuDeclaracaoDeOutraVariavelOuPontoEVirgula */
-  SimpleNode jjtn000 = new SimpleNode(JJTATRIBUICAODEVALOROUDECLARACAODEOUTRAVARIAVELOUPONTOEVIRGULA);
+  static final public void atribuicaoValor() throws ParseException {
+ /*@bgen(jjtree) atribuicaoValor */
+  SimpleNode jjtn000 = new SimpleNode(JJTATRIBUICAOVALOR);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case RECEBE:
-        recebe();
-        valor();
-        declaracaoDeOutraVariavelOuPontoEVirgula();
-        break;
-      case PONTOEVIRGULA:
-      case VIRGULA:
-        declaracaoDeOutraVariavelOuPontoEVirgula();
-        break;
-      default:
-        jj_la1[2] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      recebe();
+      valor();
     } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -313,25 +320,14 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
-  static final public void declaracaoDeOutraVariavelOuPontoEVirgula() throws ParseException {
- /*@bgen(jjtree) declaracaoDeOutraVariavelOuPontoEVirgula */
-  SimpleNode jjtn000 = new SimpleNode(JJTDECLARACAODEOUTRAVARIAVELOUPONTOEVIRGULA);
+  static final public void declaracaoDeOutraVariavel() throws ParseException {
+ /*@bgen(jjtree) declaracaoDeOutraVariavel */
+  SimpleNode jjtn000 = new SimpleNode(JJTDECLARACAODEOUTRAVARIAVEL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case PONTOEVIRGULA:
-        pontoEVirgula();
-        break;
-      case VIRGULA:
-        virgula();
-        umaOuMaisvariaveisComOuSemAtribuicaoSeguidasDePontoEVirgula();
-        break;
-      default:
-        jj_la1[3] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      virgula();
+      umaOuMaisvariaveisComOuSemAtribuicao();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -353,7 +349,6 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
-//condicional
   static final public void condicional() throws ParseException {
  /*@bgen(jjtree) condicional */
   SimpleNode jjtn000 = new SimpleNode(JJTCONDICIONAL);
@@ -362,7 +357,8 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     try {
       se();
       abreParenteses();
-      expressaoLogicaFechaParenteses();
+      expressaoLogica();
+      fechaParenteses();
       abreChaves();
       bloco();
       fechaChaves();
@@ -387,14 +383,19 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
-  static final public void expressaoLogicaFechaParenteses() throws ParseException {
- /*@bgen(jjtree) expressaoLogicaFechaParenteses */
-  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSAOLOGICAFECHAPARENTESES);
+  static final public void repeticaoEnquanto() throws ParseException {
+ /*@bgen(jjtree) repeticaoEnquanto */
+  SimpleNode jjtn000 = new SimpleNode(JJTREPETICAOENQUANTO);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      idOuValor();
-      continuaExpressaoLogicaOuFechaParenteses();
+      enquanto();
+      abreParenteses();
+      expressaoLogica();
+      fechaParenteses();
+      abreChaves();
+      bloco();
+      fechaChaves();
     } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -416,29 +417,74 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
-  static final public void continuaExpressaoLogicaOuFechaParenteses() throws ParseException {
- /*@bgen(jjtree) continuaExpressaoLogicaOuFechaParenteses */
-  SimpleNode jjtn000 = new SimpleNode(JJTCONTINUAEXPRESSAOLOGICAOUFECHAPARENTESES);
+  static final public void expressaoLogica() throws ParseException {
+ /*@bgen(jjtree) expressaoLogica */
+  SimpleNode jjtn000 = new SimpleNode(JJTEXPRESSAOLOGICA);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case FECHAPARENTESES:
+      case FALSO:
+      case VERDADEIRO:
+      case ID:
+      case DECIMAL:
+      case CARACTER:
+        idOuValor();
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case IGUAL:
+        case MAIORIGUAL:
+        case MENORIGUAL:
+        case DIFERENTE:
+        case E:
+        case OU:
+        case MAIOR:
+        case MENOR:
+          continuaExpressaoLogica();
+          break;
+        default:
+          jj_la1[4] = jj_gen;
+          ;
+        }
+        break;
+      case ABREPARENTESES:
+        abreParenteses();
+        expressaoLogica();
         fechaParenteses();
         break;
-      case IGUAL:
-      case MAIORIGUAL:
-      case MENORIGUAL:
-      case MAIOR:
-      case MENOR:
-        operadorLogico();
-        expressaoLogicaFechaParenteses();
-        break;
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[5] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
+    } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            {if (true) throw (RuntimeException)jjte000;}
+          }
+          if (jjte000 instanceof ParseException) {
+            {if (true) throw (ParseException)jjte000;}
+          }
+          {if (true) throw (Error)jjte000;}
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
+  static final public void continuaExpressaoLogica() throws ParseException {
+ /*@bgen(jjtree) continuaExpressaoLogica */
+  SimpleNode jjtn000 = new SimpleNode(JJTCONTINUAEXPRESSAOLOGICA);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      operadorLogico();
+      expressaoLogica();
     } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -473,10 +519,11 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
       case FALSO:
       case VERDADEIRO:
       case DECIMAL:
+      case CARACTER:
         valor();
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[6] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -523,8 +570,17 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
       case MENOR:
         menor();
         break;
+      case DIFERENTE:
+        diferente();
+        break;
+      case E:
+        e();
+        break;
+      case OU:
+        ou();
+        break;
       default:
-        jj_la1[6] = jj_gen;
+        jj_la1[7] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -563,7 +619,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
         falso();
         break;
       default:
-        jj_la1[7] = jj_gen;
+        jj_la1[8] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -602,8 +658,11 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
       case VERDADEIRO:
         valorBooleano();
         break;
+      case CARACTER:
+        jj_consume_token(CARACTER);
+        break;
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[9] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -645,7 +704,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
         tipoCaracter();
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[10] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -979,6 +1038,76 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     }
   }
 
+  static final public void enquanto() throws ParseException {
+ /*@bgen(jjtree) enquanto */
+  SimpleNode jjtn000 = new SimpleNode(JJTENQUANTO);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(ENQUANTO);
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
+  static final public void leia() throws ParseException {
+ /*@bgen(jjtree) leia */
+  SimpleNode jjtn000 = new SimpleNode(JJTLEIA);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(LEIA);
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
+  static final public void escreva() throws ParseException {
+ /*@bgen(jjtree) escreva */
+  SimpleNode jjtn000 = new SimpleNode(JJTESCREVA);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(ESCREVA);
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
+  static final public void caracter() throws ParseException {
+ /*@bgen(jjtree) caracter */
+  SimpleNode jjtn000 = new SimpleNode(JJTCARACTER);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(CARACTER);
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
+  static final public void decimal() throws ParseException {
+ /*@bgen(jjtree) decimal */
+  SimpleNode jjtn000 = new SimpleNode(JJTDECIMAL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(DECIMAL);
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
   static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
   static public CompiladorAulaTokenManager token_source;
@@ -989,7 +1118,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[10];
+  static final private int[] jj_la1 = new int[11];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -997,10 +1126,10 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x9c00000,0x9c00000,0x20180,0x180,0x98e00,0x66000000,0x18e00,0x6000000,0x46000000,0x1c00000,};
+      jj_la1_0 = new int[] {0x19c00000,0x19c00000,0x20000,0x100,0x1fe00,0x86040000,0x86000000,0x1fe00,0x6000000,0x6000000,0x1c00000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x9,0x9,0x0,0x0,0x9,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -1021,7 +1150,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1036,7 +1165,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -1053,7 +1182,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1064,7 +1193,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -1080,7 +1209,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -1090,7 +1219,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -1141,12 +1270,12 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[34];
+    boolean[] la1tokens = new boolean[36];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -1158,7 +1287,7 @@ public class CompiladorAula/*@bgen(jjtree)*/implements CompiladorAulaTreeConstan
         }
       }
     }
-    for (int i = 0; i < 34; i++) {
+    for (int i = 0; i < 36; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
