@@ -6,26 +6,26 @@ options
   static = true;
 }
 
-PARSER_BEGIN(CompiladorAula)
+PARSER_BEGIN(CompiladorTrabalho)
 
 package parser;
 import recovery.*;
 
-public class CompiladorAula
+public class CompiladorTrabalho
 {
-  public static void main(String args []) throws ParseException
+	public static void main(String args []) throws ParseException
   {
-    CompiladorAula parser = new CompiladorAula(System.in);
+    CompiladorTrabalho parser = new CompiladorTrabalho(System.in);
     while (true)
     {
-      System.out.println("Escreva um program.a..");
-      System.out.print("------ > ");
+      System.out.println("Escreva um programaa. ..");
+      System.out.print("------ >");
 
-      SimpleNode n = CompiladorAula.main();
+      SimpleNode n = CompiladorTrabalho.main();
       n.dump(" ");
       try
       {
-        /*switch (CompiladorAula.main())
+        /*switch (CompiladorTrabalho.main())
         {
           case 0 : 
           System.out.println("OK.");
@@ -41,7 +41,7 @@ public class CompiladorAula
       {
         System.out.println("NOK.");
         System.out.println(e.getMessage());
-        CompiladorAula.ReInit(System.in);
+        CompiladorTrabalho.ReInit(System.in);
       }
       catch (Error e)
       {
@@ -106,7 +106,7 @@ public class CompiladorAula
   }
 }
 
-PARSER_END(CompiladorAula)
+PARSER_END(CompiladorTrabalho)
 
 SKIP :
 {
@@ -183,11 +183,17 @@ TOKEN :
 }
 
 SimpleNode main() :
-{}
+{RecoverySet sincronizacao = First.mainRecovery;}
 {
-	eraUmaVez()
+  try {
+    eraUmaVez()
 		bloco()
 	eViveramFelizesParaSempre()
+  }
+  catch (ParseException e) {
+    consumeUntil(sincronizacao, e, "codigo principal");
+  }
+	
 { return jjtThis; }
 }
 
@@ -204,83 +210,115 @@ void eViveramFelizesParaSempre():
 }
 
 void bloco():
-{ }
+{RecoverySet sincronizacao = First.blocoRecovery;}
 {
-	(
-		tipoDeDadoEDecalaracaoDeVariaveis()
-		| condicional()
-		| repeticaoEnquanto()
-		| repeticaoFacaEnquanto()
-		| leitura()
-		| escrita()
-	)*  
+	try {
+		(
+			tipoDeDadoEDecalaracaoDeVariaveis()
+			| condicional()
+			| repeticaoEnquanto()
+			| repeticaoFacaEnquanto()
+			| leitura()
+			| escrita()
+		)*  
+    
+  	} catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "bloco de código");
+  	}
 }
-
-
 
 
 
 
 //declaracao de variaveis
 void tipoDeDadoEDecalaracaoDeVariaveis():
-{ }
+{ RecoverySet sincronizacao = First.tipoDeDadoEDecalaracaoDeVariaveisRecovery; }
 {
-  tipoDado() umaOuMaisvariaveisComOuSemAtribuicao() pontoEVirgula()
+  try {
+	tipoDado() umaOuMaisvariaveisComOuSemAtribuicao() pontoEVirgula()
+	
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "tipo de dados declaração de variaveis");
+  }
 }
 
 void umaOuMaisvariaveisComOuSemAtribuicao():
-{ }
+{ RecoverySet sincronizacao = First.umaOuMaisvariaveisComOuSemAtribuicaoRecovery; }
 {
-  id() (atribuicaoValor())? (declaracaoDeOutraVariavel())?
+  try {
+	id() (atribuicaoValor())? (declaracaoDeOutraVariavel())?
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "uma ou mais variveis com ou sem atribuição");
+  }
+  
 }
 
 void atribuicaoValor():
-{ }
+{ RecoverySet sincronizacao = First.atribuicaoValorRecovery; }
 {
+  try {
 	recebe() (id() | valor()) (continuaExpressaoLogica() | continuaOperacaoMatematica())?
-	
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "atribução de valor em declaração de variáveis");
+  }
 }
 
 void declaracaoDeOutraVariavel():
-{ }
+{ RecoverySet sincronizacao = First.declaracaoDeOutraVariavelRecovery; }
 {
-  virgula() umaOuMaisvariaveisComOuSemAtribuicao()
+  try { 
+  	virgula() umaOuMaisvariaveisComOuSemAtribuicao()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "declaração de outra variável");
+  }
 }
-
-
-
-
-
-
-
-
-
 
 
 
 //condicional e reptições
 void condicional():
-{ }
+{ RecoverySet sincronizacao = First.condicionalRecovery;}
 {
-	se() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
-		bloco()
-	fechaChaves()
+  	try {
+		se() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
+			bloco()
+		fechaChaves()
+    }
+    catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "condicional");
+  	}
+	
 }
 
 void repeticaoEnquanto():
-{ }
+{ RecoverySet sincronizacao = First.repeticaoEnquantoRecovery; }
 {
-	enquanto() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
-		bloco()
-	fechaChaves()
+  	try {
+		enquanto() abreParenteses() expressaoLogica() fechaParenteses() abreChaves()
+			bloco()
+		fechaChaves()
+  	}
+  	catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "repetição enquanto");
+  	}
 }
 
 void repeticaoFacaEnquanto():
-{ }
+{ RecoverySet sincronizacao = First.repeticaoFacaEnquantoRecovery; }
 {
+  try {
 	faca() abreChaves()
 		bloco()
 	fechaChaves() enquanto() abreParenteses() expressaoLogica() fechaParenteses() pontoEVirgula()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "repetição faça enquanto");
+  }
+	
 }
 
 
@@ -289,23 +327,39 @@ void repeticaoFacaEnquanto():
 
 //expressão lógica
 void expressaoLogica():
-{ }
+{ RecoverySet sincronizacao = First.expressaoLogicaRecovery; }
 {
+  try {
 	(idOuValor() (continuaExpressaoLogica())?)
-	| (abreParenteses() expressaoLogica() fechaParenteses()) 
+	| (abreParenteses() expressaoLogica() fechaParenteses())
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "expressão lógica");
+  }
+	
 }
 
 void continuaExpressaoLogica():
-{ }
+{ RecoverySet sincronizacao = First.continuaExpressaoLogicaRecovery; }
 {
+  try {
 	operadorLogico() expressaoLogica()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "continua expressão lógica");
+  }
 }
 
 
 void operadorLogico():
-{ }
+{ RecoverySet sincronizacao = First.operadorLogicoRecovery;}
 {
+  try {
 	igual() | maiorIgual() | menorIgual() | maior() | menor() | diferente() |  e() | ou()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "operador lógico");
+  }
 }
 
 
@@ -316,46 +370,78 @@ void operadorLogico():
 
 //operação matemática
 void operacaoMatematica():
-{ }
+{ RecoverySet sincronizacao = First.operacaoMatematicaRecovery; }
 {
+  try {
 	(idOuDecimal() (continuaOperacaoMatematica())?)
-	| (abreParenteses() operacaoMatematica() fechaParenteses()) 
+	| (abreParenteses() operacaoMatematica() fechaParenteses())
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "operacao matematica");
+  }
+	 
 }
 
 void continuaOperacaoMatematica():
-{ }
+{ RecoverySet sincronizacao = First.continuaOperacaoMatematicaRecovery; }
 {
+  try {
 	operadorMatematico() operacaoMatematica()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "continua operacao matematica");
+  }
 }
 
 void idOuDecimal():
-{ }
+{ RecoverySet sincronizacao = First.idOuDecimalRecovery; }
 {
+  try {
 	id() | decimal()
+  }
+   catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "id ou decimal");
+  }
 }
 
 void operadorMatematico():
-{ }
+{ RecoverySet sincronizacao = First.operadorMatematicoRecovery; }
 {
+  try {
 	soma() | subtracao() | multiplicacao() | divisao()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "operador matemático");
+  }
 }
 
 
 
 //leitura e escrita
 void leitura():
-{ }
+{ RecoverySet sincronizacao = First.leituraRecovery; }
 {
+  try {
 	leia() abreParenteses() id() fechaParenteses() pontoEVirgula()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "leitura");
+  }
+	
 }
 
 void escrita():
-{ }
+{ RecoverySet sincronizacao = First.escritaRecovery; }
 {
+  try {
 	escreva()
 	abreParenteses()
 		idOuValor() (continuaExpressaoLogica() | continuaOperacaoMatematica())?
 	fechaParenteses() pontoEVirgula()
+  }
+  catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "escrita");
+  }
 }
 
 
@@ -404,10 +490,10 @@ void virgula():
 	< VIRGULA >
 }
 
-void id():
-{ }
+void id() :
+{}
 {
-  < ID >
+	<ID >
 }
 
 void tipoInteiro():

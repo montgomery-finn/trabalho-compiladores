@@ -10,3 +10,9 @@
 /SimpleNode.java
 /Token.java
 /TokenMgrError.java
+/CompiladorTrabalho.java
+/CompiladorTrabalhoConstants.java
+/CompiladorTrabalhoTokenManager.java
+/CompiladorTrabalhoTreeConstants.java
+/JJTCompiladorTrabalhoState.java
+/CompiladorTrabalho.jj
