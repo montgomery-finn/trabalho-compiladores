@@ -13,40 +13,52 @@ public interface CompiladorAulaTreeConstants
   public int JJTDECLARACAODEOUTRAVARIAVEL = 7;
   public int JJTCONDICIONAL = 8;
   public int JJTREPETICAOENQUANTO = 9;
-  public int JJTEXPRESSAOLOGICA = 10;
-  public int JJTCONTINUAEXPRESSAOLOGICA = 11;
-  public int JJTIDOUVALOR = 12;
+  public int JJTREPETICAOFACAENQUANTO = 10;
+  public int JJTEXPRESSAOLOGICA = 11;
+  public int JJTCONTINUAEXPRESSAOLOGICA = 12;
   public int JJTOPERADORLOGICO = 13;
-  public int JJTVALORBOOLEANO = 14;
-  public int JJTVALOR = 15;
-  public int JJTTIPODADO = 16;
-  public int JJTPONTOEVIRGULA = 17;
-  public int JJTVIRGULA = 18;
-  public int JJTID = 19;
-  public int JJTTIPOINTEIRO = 20;
-  public int JJTTIPOBOOLEANO = 21;
-  public int JJTTIPOCARACTER = 22;
-  public int JJTSE = 23;
-  public int JJTABREPARENTESES = 24;
-  public int JJTFECHAPARENTESES = 25;
-  public int JJTIGUAL = 26;
-  public int JJTMAIORIGUAL = 27;
-  public int JJTMENORIGUAL = 28;
-  public int JJTDIFERENTE = 29;
-  public int JJTE = 30;
-  public int JJTOU = 31;
-  public int JJTMAIOR = 32;
-  public int JJTMENOR = 33;
-  public int JJTRECEBE = 34;
-  public int JJTVERDADEIRO = 35;
-  public int JJTFALSO = 36;
-  public int JJTABRECHAVES = 37;
-  public int JJTFECHACHAVES = 38;
-  public int JJTENQUANTO = 39;
-  public int JJTLEIA = 40;
-  public int JJTESCREVA = 41;
-  public int JJTCARACTER = 42;
-  public int JJTDECIMAL = 43;
+  public int JJTOPERACAOMATEMATICA = 14;
+  public int JJTCONTINUAOPERACAOMATEMATICA = 15;
+  public int JJTIDOUDECIMAL = 16;
+  public int JJTOPERADORMATEMATICO = 17;
+  public int JJTLEITURA = 18;
+  public int JJTESCRITA = 19;
+  public int JJTVALORBOOLEANO = 20;
+  public int JJTIDOUVALOR = 21;
+  public int JJTVALOR = 22;
+  public int JJTTIPODADO = 23;
+  public int JJTPONTOEVIRGULA = 24;
+  public int JJTVIRGULA = 25;
+  public int JJTID = 26;
+  public int JJTTIPOINTEIRO = 27;
+  public int JJTTIPOBOOLEANO = 28;
+  public int JJTTIPOCARACTER = 29;
+  public int JJTSE = 30;
+  public int JJTABREPARENTESES = 31;
+  public int JJTFECHAPARENTESES = 32;
+  public int JJTIGUAL = 33;
+  public int JJTMAIORIGUAL = 34;
+  public int JJTMENORIGUAL = 35;
+  public int JJTDIFERENTE = 36;
+  public int JJTE = 37;
+  public int JJTOU = 38;
+  public int JJTMAIOR = 39;
+  public int JJTMENOR = 40;
+  public int JJTRECEBE = 41;
+  public int JJTVERDADEIRO = 42;
+  public int JJTFALSO = 43;
+  public int JJTABRECHAVES = 44;
+  public int JJTFECHACHAVES = 45;
+  public int JJTENQUANTO = 46;
+  public int JJTLEIA = 47;
+  public int JJTESCREVA = 48;
+  public int JJTCARACTER = 49;
+  public int JJTDECIMAL = 50;
+  public int JJTSOMA = 51;
+  public int JJTSUBTRACAO = 52;
+  public int JJTMULTIPLICACAO = 53;
+  public int JJTDIVISAO = 54;
+  public int JJTFACA = 55;
 
 
   public String[] jjtNodeName = {
@@ -60,11 +72,18 @@ public interface CompiladorAulaTreeConstants
     "declaracaoDeOutraVariavel",
     "condicional",
     "repeticaoEnquanto",
+    "repeticaoFacaEnquanto",
     "expressaoLogica",
     "continuaExpressaoLogica",
-    "idOuValor",
     "operadorLogico",
+    "operacaoMatematica",
+    "continuaOperacaoMatematica",
+    "idOuDecimal",
+    "operadorMatematico",
+    "leitura",
+    "escrita",
     "valorBooleano",
+    "idOuValor",
     "valor",
     "tipoDado",
     "pontoEVirgula",
@@ -94,6 +113,11 @@ public interface CompiladorAulaTreeConstants
     "escreva",
     "caracter",
     "decimal",
+    "soma",
+    "subtracao",
+    "multiplicacao",
+    "divisao",
+    "faca",
   };
 }
-/* JavaCC - OriginalChecksum=e32ef28e8949ffcd4024875a076805b5 (do not edit this line) */
+/* JavaCC - OriginalChecksum=184116e1e7c0301291f4e033c36c0a7d (do not edit this line) */

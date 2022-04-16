@@ -139,6 +139,10 @@ TOKEN :
 | < FECHAPARENTESES : ")" >
 | < ABRECHAVES : "{" >
 | < FECHACHAVES : "}" > 
+| < SOMA : "+" >
+| < MULTIPLICACAO : "*" >
+| < SUBTRACAO : "-" >
+| < DIVISAO : "/" >
 
 
 
@@ -155,6 +159,7 @@ TOKEN :
 
 | < SE : "se" >
 | < ENQUANTO: "enquanto" >
+| < FACA : "faca" >
 
 
 
@@ -201,8 +206,18 @@ void eViveramFelizesParaSempre():
 void bloco():
 { }
 {
-	(tipoDeDadoEDecalaracaoDeVariaveis() | condicional() | repeticaoEnquanto())*  
+	(
+		tipoDeDadoEDecalaracaoDeVariaveis()
+		| condicional()
+		| repeticaoEnquanto()
+		| repeticaoFacaEnquanto()
+		| leitura()
+		| escrita()
+	)*  
 }
+
+
+
 
 
 
@@ -222,7 +237,8 @@ void umaOuMaisvariaveisComOuSemAtribuicao():
 void atribuicaoValor():
 { }
 {
-	recebe() valor()
+	recebe() (id() | valor()) (continuaExpressaoLogica() | continuaOperacaoMatematica())?
+	
 }
 
 void declaracaoDeOutraVariavel():
@@ -242,7 +258,7 @@ void declaracaoDeOutraVariavel():
 
 
 
-
+//condicional e reptições
 void condicional():
 { }
 {
@@ -259,6 +275,19 @@ void repeticaoEnquanto():
 	fechaChaves()
 }
 
+void repeticaoFacaEnquanto():
+{ }
+{
+	faca() abreChaves()
+		bloco()
+	fechaChaves() enquanto() abreParenteses() expressaoLogica() fechaParenteses() pontoEVirgula()
+}
+
+
+
+
+
+//expressão lógica
 void expressaoLogica():
 { }
 {
@@ -272,11 +301,6 @@ void continuaExpressaoLogica():
 	operadorLogico() expressaoLogica()
 }
 
-void idOuValor():
-{ }
-{
-	id() | valor()
-}
 
 void operadorLogico():
 { }
@@ -285,16 +309,77 @@ void operadorLogico():
 }
 
 
+
+
+
+
+
+//operação matemática
+void operacaoMatematica():
+{ }
+{
+	(idOuDecimal() (continuaOperacaoMatematica())?)
+	| (abreParenteses() operacaoMatematica() fechaParenteses()) 
+}
+
+void continuaOperacaoMatematica():
+{ }
+{
+	operadorMatematico() operacaoMatematica()
+}
+
+void idOuDecimal():
+{ }
+{
+	id() | decimal()
+}
+
+void operadorMatematico():
+{ }
+{
+	soma() | subtracao() | multiplicacao() | divisao()
+}
+
+
+
+//leitura e escrita
+void leitura():
+{ }
+{
+	leia() abreParenteses() id() fechaParenteses() pontoEVirgula()
+}
+
+void escrita():
+{ }
+{
+	escreva()
+	abreParenteses()
+		idOuValor() (continuaExpressaoLogica() | continuaOperacaoMatematica())?
+	fechaParenteses() pontoEVirgula()
+}
+
+
+
+
+
+//valores
 void valorBooleano():
 { }
 {
 	verdadeiro() | falso() 
 }
 
+void idOuValor():
+{ }
+{
+	id() | valor()
+}
+
+
 void valor():
 { }
 {
-	< DECIMAL > | valorBooleano() | < CARACTER >
+	decimal() | valorBooleano() | caracter()
 }
 
 void tipoDado() :
@@ -468,3 +553,35 @@ void decimal():
 {
 	< DECIMAL >
 }
+
+void soma():
+{ }
+{
+	< SOMA >
+}
+
+void subtracao():
+{ }
+{
+  < SUBTRACAO >
+}
+
+void multiplicacao():
+{ }
+{
+	< MULTIPLICACAO >
+}
+
+void divisao():
+{ }
+{
+	< DIVISAO >
+}
+
+void faca():
+{ }
+{
+	< FACA >
+}
+
+

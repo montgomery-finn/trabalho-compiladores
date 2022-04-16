@@ -45,33 +45,43 @@ public interface CompiladorAulaConstants {
   /** RegularExpression Id. */
   int FECHACHAVES = 21;
   /** RegularExpression Id. */
-  int TIPOINTEIRO = 22;
+  int SOMA = 22;
   /** RegularExpression Id. */
-  int TIPOBOOLEANO = 23;
+  int MULTIPLICACAO = 23;
   /** RegularExpression Id. */
-  int TIPOCARACTER = 24;
+  int SUBTRACAO = 24;
   /** RegularExpression Id. */
-  int FALSO = 25;
+  int DIVISAO = 25;
   /** RegularExpression Id. */
-  int VERDADEIRO = 26;
+  int TIPOINTEIRO = 26;
   /** RegularExpression Id. */
-  int SE = 27;
+  int TIPOBOOLEANO = 27;
   /** RegularExpression Id. */
-  int ENQUANTO = 28;
+  int TIPOCARACTER = 28;
   /** RegularExpression Id. */
-  int LEIA = 29;
+  int FALSO = 29;
   /** RegularExpression Id. */
-  int ESCREVA = 30;
+  int VERDADEIRO = 30;
   /** RegularExpression Id. */
-  int ID = 31;
+  int SE = 31;
   /** RegularExpression Id. */
-  int DECIMAL = 32;
+  int ENQUANTO = 32;
   /** RegularExpression Id. */
-  int DIGITO = 33;
+  int FACA = 33;
   /** RegularExpression Id. */
-  int LETRA = 34;
+  int LEIA = 34;
   /** RegularExpression Id. */
-  int CARACTER = 35;
+  int ESCREVA = 35;
+  /** RegularExpression Id. */
+  int ID = 36;
+  /** RegularExpression Id. */
+  int DECIMAL = 37;
+  /** RegularExpression Id. */
+  int DIGITO = 38;
+  /** RegularExpression Id. */
+  int LETRA = 39;
+  /** RegularExpression Id. */
+  int CARACTER = 40;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -100,6 +110,10 @@ public interface CompiladorAulaConstants {
     "\")\"",
     "\"{\"",
     "\"}\"",
+    "\"+\"",
+    "\"*\"",
+    "\"-\"",
+    "\"/\"",
     "\"inteiro\"",
     "\"booleano\"",
     "\"caracter\"",
@@ -107,6 +121,7 @@ public interface CompiladorAulaConstants {
     "\"verdadeiro\"",
     "\"se\"",
     "\"enquanto\"",
+    "\"faca\"",
     "\"leia\"",
     "\"escreva\"",
     "<ID>",
