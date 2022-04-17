@@ -18,8 +18,7 @@ public class CompiladorTrabalho
     CompiladorTrabalho parser = new CompiladorTrabalho(System.in);
     while (true)
     {
-      System.out.println("Escreva um programaa. ..");
-      System.out.print("------ >");
+      System.out.println("Escreva um programa:");
 
       SimpleNode n = CompiladorTrabalho.main();
       n.dump(" ");
@@ -132,8 +131,8 @@ TOKEN :
 | < DIFERENTE : "!=" >
 | < E : "&&" >
 | < OU : "||" >
-| < MAIOR : " >" >
-| < MENOR : "< " >
+| < MAIOR : ">" >
+| < MENOR : "<" >
 | < RECEBE : "=" >
 | < ABREPARENTESES : "(" >
 | < FECHAPARENTESES : ")" >
@@ -150,7 +149,6 @@ TOKEN :
 | < TIPOINTEIRO : "inteiro" >
 | < TIPOBOOLEANO : "booleano" >
 | < TIPOCARACTER : "caracter" >
-
 
 
 | < FALSO : "falso" >
@@ -173,9 +171,7 @@ TOKEN :
 | < ID : < LETRA >(< LETRA > | < DIGITO >)* >
 
 
-
-
-| < DECIMAL : (< DIGITO >)+ >
+| < DECIMAL : ("-")?(< DIGITO >)+ >
 | < DIGITO : [ "0"-"9" ] >
 | < LETRA: ["A"-"Z"] | ["a"-"z"] >
 | < CARACTER : "'" (< LETRA > | < DIGITO >) "'">
@@ -220,6 +216,7 @@ void bloco():
 			| repeticaoFacaEnquanto()
 			| leitura()
 			| escrita()
+			| atribuicaoValorVariavelJaDeclarada()
 		)*  
     
   	} catch (ParseException e) {
@@ -250,7 +247,7 @@ void umaOuMaisvariaveisComOuSemAtribuicao():
 	id() (atribuicaoValor())? (declaracaoDeOutraVariavel())?
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "uma ou mais variveis com ou sem atribuição");
+		consumeUntil(sincronizacao, e, "erro na declaração das variáveis");
   }
   
 }
@@ -277,6 +274,12 @@ void declaracaoDeOutraVariavel():
   }
 }
 
+void atribuicaoValorVariavelJaDeclarada():
+{ }
+{
+	id() recebe()(id() | valor()) (continuaExpressaoLogica() | continuaOperacaoMatematica())?
+	pontoEVirgula()
+}
 
 
 //condicional e reptições
@@ -443,7 +446,7 @@ void escrita():
 		consumeUntil(sincronizacao, e, "escrita");
   }
 }
-
+ 
 
 
 
