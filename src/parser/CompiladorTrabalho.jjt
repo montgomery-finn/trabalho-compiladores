@@ -10,45 +10,34 @@ PARSER_BEGIN(CompiladorTrabalho)
 
 package parser;
 import recovery.*;
+import java.io.InputStream;
 
 public class CompiladorTrabalho
 {
+
+	private static boolean _hasToReInit = false;
+
+	public static void compilar(InputStream stream) throws ParseException {
+		CompiladorTrabalho parser = null;
+
+		if(!_hasToReInit) {
+		  parser = new CompiladorTrabalho(stream);
+		  _hasToReInit = true;
+		}
+		else {
+			parser.ReInit(stream);
+		}
+	  	
+	    SimpleNode n = CompiladorTrabalho.main();
+	    n.dump(" ");
+	}
+
+  
 	public static void main(String args []) throws ParseException
   {
     CompiladorTrabalho parser = new CompiladorTrabalho(System.in);
-    while (true)
-    {
-      System.out.println("Escreva um programa:");
-
-      SimpleNode n = CompiladorTrabalho.main();
-      n.dump(" ");
-      try
-      {
-        /*switch (CompiladorTrabalho.main())
-        {
-          case 0 : 
-          System.out.println("OK.");
-          break;
-          case 1 : 
-          System.out.println("Goodbye.");
-          break;
-          default : 
-          break;
-        }*/
-      }
-      catch (Exception e)
-      {
-        System.out.println("NOK.");
-        System.out.println(e.getMessage());
-        CompiladorTrabalho.ReInit(System.in);
-      }
-      catch (Error e)
-      {
-        System.out.println("Oops.");
-        System.out.println(e.getMessage());
-        break;
-      }
-    }
+	SimpleNode n = CompiladorTrabalho.main();
+  	n.dump(" ");
   }
 
   static public String im(int x)

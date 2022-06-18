@@ -16,3 +16,15 @@
 /CompiladorTrabalhoTreeConstants.java
 /JJTCompiladorTrabalhoState.java
 /CompiladorTrabalho.jj
+/Node.class
+/ParseException.class
+/SimpleCharStream.class
+/SimpleNode.class
+/Token.class
+/TokenMgrError.class
+/CompiladorTrabalhoTreeConstants.class
+/JJTCompiladorTrabalhoState.class
+/.gitignore
+/CompiladorTrabalho.class
+/CompiladorTrabalhoConstants.class
+/CompiladorTrabalhoTokenManager.class
