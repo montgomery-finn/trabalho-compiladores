@@ -16,6 +16,7 @@ public class CompiladorTrabalho
 {
 
 	private static boolean _hasToReInit = false;
+	private static boolean _hasErrors = false;
 
 	public static void compilar(InputStream stream) throws ParseException {
 		CompiladorTrabalho parser = null;
@@ -27,9 +28,16 @@ public class CompiladorTrabalho
 		else {
 			parser.ReInit(stream);
 		}
-	  	
+
 	    SimpleNode n = CompiladorTrabalho.main();
+	    
+	  	System.out.println("arvore:");
 	    n.dump(" ");
+
+	    if(!_hasErrors) {
+			System.out.println("");
+			System.out.println("Compilado com sucesso");
+	    }
 	}
 
   
@@ -55,10 +63,10 @@ public class CompiladorTrabalho
   }
 	
   static Token lastError = null;
-  static boolean eof;    // variável que indica se EOF foi alcançado
+  static boolean eof;    // variavel que indica se EOF foi alcancado
 	
-  // o método abaixo consome tokens até alcançar um que pertença ao conjunto
-  // de sincronização
+  // o metodo abaixo consome tokens ate alcancar um que pertenca ao conjunto
+  // de sincronizacao
   static void consumeUntil(RecoverySet g,
 	                 ParseException e,
 	                 String met) throws ParseEOFException,
@@ -67,19 +75,19 @@ public class CompiladorTrabalho
 	Token tok;
 	System.out.println();
 	System.out.println("*** " + met + " ***");
-	System.out.println("     Conjunto de sincronização: " + g);
+	System.out.println("     Conjunto de sincronizacao: " + g);
 		
-	if (g == null) throw e; // se o conjunto é null, propaga a exceção
+	if (g == null) throw e; // se o conjunto e null, propaga a excecao
 	
 	tok = getToken(1); // pega token corrente
-	while ( ! eof )	{ // se não chegou ao fim do arquivo
+	while ( ! eof )	{ // se nao chegou ao fim do arquivo
 	  if ( g.contains(tok.kind)) {//achou um token no conjunto
-	    System.out.println("     Encontrado token de sincronização: " + 
+	    System.out.println("     Encontrado token de sincronizacao: " + 
 	                       im(tok.kind));
 	    break;
 	  }
 	  System.out.println("     Ignorando o token: " + im(tok.kind));
-	  getNextToken();     // pega próximo token       
+	  getNextToken();     // pega proximo token       
       tok = getToken(1);
 	  if (tok.kind == EOF && ! g.contains(EOF) ) // fim da entrada?   
 	      eof = true;
@@ -90,7 +98,7 @@ public class CompiladorTrabalho
 	   
 	}
 	if ( eof )
-	  throw new ParseEOFException("Encontrei EOF onde não deveria.");
+	  throw new ParseEOFException("Encontrei EOF onde nao deveria.");
   }
 }
 
@@ -176,22 +184,11 @@ SimpleNode main() :
 	eViveramFelizesParaSempre()
   }
   catch (ParseException e) {
-    consumeUntil(sincronizacao, e, "codigo principal");
+    consumeUntil(sincronizacao, e, "erro na estrutura principal");
+    _hasErrors = true;
   }
 	
 { return jjtThis; }
-}
-
-void eraUmaVez():
-{ }
-{
-	< ERAUMAVEZ >
-}
-
-void eViveramFelizesParaSempre():
-{ }
-{
-	< EVIVERAMFELIZESPARASEMPRE >
 }
 
 void bloco():
@@ -209,11 +206,10 @@ void bloco():
 		)*  
     
   	} catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "bloco de código");
+		consumeUntil(sincronizacao, e, "declaracao de bloco de codigo");
+    _hasErrors = true;
   	}
 }
-
-
 
 
 //declaracao de variaveis
@@ -225,7 +221,8 @@ void tipoDeDadoEDecalaracaoDeVariaveis():
 	
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "tipo de dados declaração de variaveis");
+	consumeUntil(sincronizacao, e, "tipo de dados e declara��o de variaveis");
+	_hasErrors = true;
   }
 }
 
@@ -236,7 +233,8 @@ void umaOuMaisvariaveisComOuSemAtribuicao():
 	id() (atribuicaoValor())? (declaracaoDeOutraVariavel())?
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "erro na declaração das variáveis");
+	consumeUntil(sincronizacao, e, "declaracao de variaveis");
+	_hasErrors = true;
   }
   
 }
@@ -248,7 +246,8 @@ void atribuicaoValor():
 	recebe() (id() | valor()) (continuaExpressaoLogica() | continuaOperacaoMatematica())?
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "atribução de valor em declaração de variáveis");
+	consumeUntil(sincronizacao, e, "atribuicao de valor em declaracao de variaveis");
+    _hasErrors = true;
   }
 }
 
@@ -259,19 +258,28 @@ void declaracaoDeOutraVariavel():
   	virgula() umaOuMaisvariaveisComOuSemAtribuicao()
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "declaração de outra variável");
+	consumeUntil(sincronizacao, e, "declaracao de variaveis em sequencia");
+    _hasErrors = true;
   }
 }
 
 void atribuicaoValorVariavelJaDeclarada():
-{ }
+{ RecoverySet sincronizacao = First.atribuicaoValorVariavelJaDeclaradaRecovery; }
 {
-	id() recebe()(id() | valor()) (continuaExpressaoLogica() | continuaOperacaoMatematica())?
-	pontoEVirgula()
+	try {
+		id() recebe()(id() | valor()) (continuaExpressaoLogica() | continuaOperacaoMatematica())?
+		pontoEVirgula()
+	}
+	catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "atribuicao de variavel ja declarada");
+		_hasErrors = true;
+		
+  	}
 }
 
 
-//condicional e reptições
+//condicional e repticoes
+
 void condicional():
 { RecoverySet sincronizacao = First.condicionalRecovery;}
 {
@@ -282,6 +290,7 @@ void condicional():
     }
     catch (ParseException e) {
 		consumeUntil(sincronizacao, e, "condicional");
+    	_hasErrors = true;
   	}
 	
 }
@@ -295,7 +304,8 @@ void repeticaoEnquanto():
 		fechaChaves()
   	}
   	catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "repetição enquanto");
+		consumeUntil(sincronizacao, e, "repeticaoo enquanto");
+    	_hasErrors = true;
   	}
 }
 
@@ -308,7 +318,8 @@ void repeticaoFacaEnquanto():
 	fechaChaves() enquanto() abreParenteses() expressaoLogica() fechaParenteses() pontoEVirgula()
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "repetição faça enquanto");
+		consumeUntil(sincronizacao, e, "repeticao faca enquanto");
+    	_hasErrors = true;
   }
 	
 }
@@ -317,7 +328,7 @@ void repeticaoFacaEnquanto():
 
 
 
-//expressão lógica
+//expressao logica
 void expressaoLogica():
 { RecoverySet sincronizacao = First.expressaoLogicaRecovery; }
 {
@@ -326,7 +337,8 @@ void expressaoLogica():
 	| (abreParenteses() expressaoLogica() fechaParenteses())
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "expressão lógica");
+		consumeUntil(sincronizacao, e, "expressao logica");
+    	_hasErrors = true;
   }
 	
 }
@@ -338,10 +350,10 @@ void continuaExpressaoLogica():
 	operadorLogico() expressaoLogica()
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "continua expressão lógica");
+		consumeUntil(sincronizacao, e, "expressao logica");
+    	_hasErrors = true;
   }
 }
-
 
 void operadorLogico():
 { RecoverySet sincronizacao = First.operadorLogicoRecovery;}
@@ -350,7 +362,8 @@ void operadorLogico():
 	igual() | maiorIgual() | menorIgual() | maior() | menor() | diferente() |  e() | ou()
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "operador lógico");
+		consumeUntil(sincronizacao, e, "operador logico");
+    	_hasErrors = true;
   }
 }
 
@@ -360,7 +373,7 @@ void operadorLogico():
 
 
 
-//operação matemática
+//operacao matematica
 void operacaoMatematica():
 { RecoverySet sincronizacao = First.operacaoMatematicaRecovery; }
 {
@@ -370,6 +383,7 @@ void operacaoMatematica():
   }
   catch (ParseException e) {
 		consumeUntil(sincronizacao, e, "operacao matematica");
+    	_hasErrors = true;
   }
 	 
 }
@@ -381,7 +395,8 @@ void continuaOperacaoMatematica():
 	operadorMatematico() operacaoMatematica()
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "continua operacao matematica");
+		consumeUntil(sincronizacao, e, "operacao matematica");
+    	_hasErrors = true;
   }
 }
 
@@ -393,6 +408,7 @@ void idOuDecimal():
   }
    catch (ParseException e) {
 		consumeUntil(sincronizacao, e, "id ou decimal");
+    	_hasErrors = true;
   }
 }
 
@@ -403,7 +419,8 @@ void operadorMatematico():
 	soma() | subtracao() | multiplicacao() | divisao()
   }
   catch (ParseException e) {
-		consumeUntil(sincronizacao, e, "operador matemático");
+		consumeUntil(sincronizacao, e, "operador matematico");
+    	_hasErrors = true;
   }
 }
 
@@ -418,6 +435,7 @@ void leitura():
   }
   catch (ParseException e) {
 		consumeUntil(sincronizacao, e, "leitura");
+    	_hasErrors = true;
   }
 	
 }
@@ -433,6 +451,7 @@ void escrita():
   }
   catch (ParseException e) {
 		consumeUntil(sincronizacao, e, "escrita");
+    	_hasErrors = true;
   }
 }
  
@@ -442,34 +461,72 @@ void escrita():
 
 //valores
 void valorBooleano():
-{ }
+{ RecoverySet sincronizacao = First.valorBooleanoRecovery; }
 {
-	verdadeiro() | falso() 
+	try {
+	  verdadeiro() | falso() 
+	}
+	catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "id ou valor");
+    	_hasErrors = true;
+  	}
 }
 
 void idOuValor():
-{ }
+{ RecoverySet sincronizacao = First.idOuValorRecovery; }
 {
-	id() | valor()
+	try {
+		id() | valor()
+	}
+	catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "id ou valor");
+    	_hasErrors = true;
+  	}
 }
 
 
 void valor():
-{ }
+{ RecoverySet sincronizacao = First.valorRecovery; }
 {
-	decimal() | valorBooleano() | caracter()
+  	try {
+		decimal() | valorBooleano() | caracter()
+  	}
+	catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "valor");
+    	_hasErrors = true;
+  	}
 }
 
 void tipoDado() :
-{}
+{ RecoverySet sincronizacao = First.tipoDadoRecovery; }
 {
-	tipoInteiro() | tipoBooleano() | tipoCaracter()
+	try {
+		tipoInteiro() | tipoBooleano() | tipoCaracter()
+	}
+	catch (ParseException e) {
+		consumeUntil(sincronizacao, e, "tipo de dado");
+    	_hasErrors = true;
+  	}
 }
 
 
 
 
 //terminais
+
+void eraUmaVez():
+{ }
+{
+	< ERAUMAVEZ >
+}
+
+void eViveramFelizesParaSempre():
+{ }
+{
+	< EVIVERAMFELIZESPARASEMPRE >
+}
+
+
 void pontoEVirgula():
 { }
 {
