@@ -16,9 +16,12 @@ import java.nio.charset.Charset;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import parser.CompiladorTrabalho;
 import parser.ParseException;
+import my.editor.LineNumberingTextArea;
 
 /**
  *
@@ -58,6 +61,30 @@ public class Editor extends javax.swing.JFrame {
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
+        LineNumberingTextArea lineNumberingTextArea = new LineNumberingTextArea(jTextArea1);
+        jScrollPane1.setRowHeaderView(lineNumberingTextArea);
+
+        jTextArea1.getDocument().addDocumentListener(new DocumentListener()
+        {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent)
+            {
+                lineNumberingTextArea.updateLineNumbers();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent)
+            {
+                lineNumberingTextArea.updateLineNumbers();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent)
+            {
+                lineNumberingTextArea.updateLineNumbers();
+            }
+        });
+
         
         jTextArea2.setEditable(false);
         jTextArea2.setColumns(20);

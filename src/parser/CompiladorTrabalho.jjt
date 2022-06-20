@@ -20,7 +20,7 @@ public class CompiladorTrabalho
 
 	public static void compilar(InputStream stream) throws ParseException {
 		CompiladorTrabalho parser = null;
-
+		 _hasErrors = false;
 		if(!_hasToReInit) {
 		  parser = new CompiladorTrabalho(stream);
 		  _hasToReInit = true;
